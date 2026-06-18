@@ -110,13 +110,13 @@ export default function Dashboard() {
             ) : (
               cards.map((card) => (
                 <motion.div key={card.id} variants={item} className="group cursor-pointer" onClick={() => setLocation(`/cards/${card.id}`)}>
-                  <div className="gradient-border p-[2px] rounded-3xl h-full shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
-                    <div className="glass-panel rounded-[1.4rem] overflow-hidden h-full">
+                  <div className="gradient-border p-[2px] rounded-3xl md:h-full shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
+                    <div className="glass-panel rounded-[1.4rem] overflow-hidden md:h-full">
                       {card.imageUrl ? (
                         <img
                           src={card.imageUrl}
                           alt={card.name}
-                          className="w-full h-full min-h-[280px] object-contain md:object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-auto md:h-full md:min-h-[280px] object-contain md:object-cover group-hover:scale-105 transition-transform duration-500"
                           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                         />
                       ) : (
