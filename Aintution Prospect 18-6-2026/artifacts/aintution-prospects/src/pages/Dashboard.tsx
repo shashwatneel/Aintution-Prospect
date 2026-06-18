@@ -116,7 +116,7 @@ export default function Dashboard() {
                         <img
                           src={card.imageUrl}
                           alt={card.name}
-                          className="w-full h-full min-h-[280px] object-cover group-hover:scale-105 transition-transform duration-500"
+                          className="w-full h-full min-h-[280px] object-contain md:object-cover group-hover:scale-105 transition-transform duration-500"
                           onError={(e) => { (e.target as HTMLImageElement).style.display = "none"; }}
                         />
                       ) : (
