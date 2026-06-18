@@ -1,0 +1,66 @@
+root@Aintution-Prospect:/var/www/aintution-prospect/Aintution-Prospect/Aintution Prospect 18-6-2026# git pull origin Production
+remote: Enumerating objects: 21, done.
+remote: Counting objects: 100% (21/21), done.
+remote: Compressing objects: 100% (5/5), done.
+remote: Total 12 (delta 7), reused 12 (delta 7), pack-reused 0 (from 0)
+Unpacking objects: 100% (12/12), 47.22 KiB | 2.15 MiB/s, done.
+From https://github.com/shashwatneel/Aintution-Prospect
+ * branch            Production -> FETCH_HEAD
+   1c92ee7..de9af81  Production -> origin/Production
+Updating 1c92ee7..de9af81
+Fast-forward
+ Aintution Prospect 18-6-2026/artifacts/aintution-prospects/.tsbuildinfo              |   2 +-
+ .../artifacts/aintution-prospects/src/pages/ProspectTable.tsx                        |  44 ++++++++++++++++++++++++++++----
+ .../Pasted-root-Aintution-Prospect-var-www-aintution-prospect-Aint_1781784497887.txt |  54 ++++++++++++++++++++++++++++++++++++++++
+ Aintution Prospect 18-6-2026/attached_assets/image_1781784722233.png                 | Bin 0 -> 54674 bytes
+ 4 files changed, 94 insertions(+), 6 deletions(-)
+ create mode 100644 Aintution Prospect 18-6-2026/attached_assets/Pasted-root-Aintution-Prospect-var-www-aintution-prospect-Aint_1781784497887.txt
+ create mode 100644 Aintution Prospect 18-6-2026/attached_assets/image_1781784722233.png
+root@Aintution-Prospect:/var/www/aintution-prospect/Aintution-Prospect/Aintution Prospect 18-6-2026# pnpm --filter @workspace/api-server run build
+
+> @workspace/api-server@0.0.0 build /var/www/aintution-prospect/Aintution-Prospect/Aintution Prospect 18-6-2026/artifacts/api-server
+> node ./build.mjs
+
+
+  dist/index.mjs                       2.3mb ⚠️
+  dist/pino-worker.mjs               153.5kb
+  dist/pino-file.mjs                 142.1kb
+  dist/pino-pretty.mjs               114.6kb
+  dist/thread-stream-worker.mjs        7.3kb
+  dist/index.mjs.map                   3.9mb
+  dist/pino-worker.mjs.map           256.9kb
+  dist/pino-file.mjs.map             229.1kb
+  dist/pino-pretty.mjs.map           204.0kb
+  dist/thread-stream-worker.mjs.map   12.0kb
+
+⚡ Done in 1985ms
+root@Aintution-Prospect:/var/www/aintution-prospect/Aintution-Prospect/Aintution Prospect 18-6-2026# pm2 restart aintution-api
+Use --update-env to update environment variables
+[PM2] Applying action restartProcessId on app [aintution-api](ids: [ 0 ])
+[PM2] [aintution-api](0) ✓
+┌────┬────────────────────┬──────────┬──────┬───────────┬──────────┬──────────┐
+│ id │ name               │ mode     │ ↺    │ status    │ cpu      │ memory   │
+├────┼────────────────────┼──────────┼──────┼───────────┼──────────┼──────────┤
+│ 0  │ aintution-api      │ fork     │ 9    │ online    │ 0%       │ 25.0mb   │
+└────┴────────────────────┴──────────┴──────┴───────────┴──────────┴──────────┘
+root@Aintution-Prospect:/var/www/aintution-prospect/Aintution-Prospect/Aintution Prospect 18-6-2026# pnpm --filter @workspace/aintution-prospects run build
+
+> @workspace/aintution-prospects@0.0.0 build /var/www/aintution-prospect/Aintution-Prospect/Aintution Prospect 18-6-2026/artifacts/aintution-prospects
+> vite build --config vite.config.ts
+
+failed to load config from /var/www/aintution-prospect/Aintution-Prospect/Aintution Prospect 18-6-2026/artifacts/aintution-prospects/vite.config.ts
+error during build:
+Error: PORT environment variable is required but was not provided.
+    at file:///var/www/aintution-prospect/Aintution-Prospect/Aintution%20Prospect%2018-6-2026/artifacts/aintution-prospects/node_modules/.vite-temp/vite.config.ts.timestamp-1781787427822-b483a0e86a6aa.mjs:10:9
+    at ModuleJob.run (node:internal/modules/esm/module_job:325:25)
+    at async ModuleLoader.import (node:internal/modules/esm/loader:606:24)
+    at async loadConfigFromBundledFile (file:///var/www/aintution-prospect/Aintution-Prospect/Aintution%20Prospect%2018-6-2026/node_modules/.pnpm/vite@7.3.3_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:35936:12)
+    at async bundleAndLoadConfigFile (file:///var/www/aintution-prospect/Aintution-Prospect/Aintution%20Prospect%2018-6-2026/node_modules/.pnpm/vite@7.3.3_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:35824:17)
+    at async loadConfigFromFile (file:///var/www/aintution-prospect/Aintution-Prospect/Aintution%20Prospect%2018-6-2026/node_modules/.pnpm/vite@7.3.3_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:35791:42)
+    at async resolveConfig (file:///var/www/aintution-prospect/Aintution-Prospect/Aintution%20Prospect%2018-6-2026/node_modules/.pnpm/vite@7.3.3_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:35440:22)
+    at async createBuilder (file:///var/www/aintution-prospect/Aintution-Prospect/Aintution%20Prospect%2018-6-2026/node_modules/.pnpm/vite@7.3.3_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/chunks/config.js:33895:19)
+    at async CAC.<anonymous> (file:///var/www/aintution-prospect/Aintution-Prospect/Aintution%20Prospect%2018-6-2026/node_modules/.pnpm/vite@7.3.3_@types+node@25.6.2_jiti@2.7.0_lightningcss@1.32.0_tsx@4.21.0_yaml@2.8.4/node_modules/vite/dist/node/cli.js:629:10)
+/var/www/aintution-prospect/Aintution-Prospect/Aintution Prospect 18-6-2026/artifacts/aintution-prospects:
+ ERR_PNPM_RECURSIVE_RUN_FIRST_FAIL  @workspace/aintution-prospects@0.0.0 build: `vite build --config vite.config.ts`
+Exit status 1
+root@Aintution-Prospect:/var/www/aintution-prospect/Aintution-Prospect/Aintution Prospect 18-6-2026# pnpm --filter @workspace/aintution-prospects run build
