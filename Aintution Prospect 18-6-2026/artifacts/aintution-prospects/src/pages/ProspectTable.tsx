@@ -1,6 +1,6 @@
 import { useLocation, useRoute } from "wouter";
 import { motion, AnimatePresence } from "framer-motion";
-import { ArrowLeft, Settings, Plus, Check, Copy, Clipboard, CheckSquare, Square, Trash2, Link, SlidersHorizontal, X, Mail } from "lucide-react";
+import { ArrowLeft, Settings, Plus, Check, Copy, Clipboard, CheckSquare, Square, Trash2, Link, SlidersHorizontal, X, Mail, Search } from "lucide-react";
 import AI_LOGO from "@assets/AI_LOGO_1781758197757.png";
 import {
   useGetCard,
@@ -646,11 +646,20 @@ export default function ProspectTable() {
   const [filterStatus, setFilterStatus] = useState<string | null>(null);
   const [filterMsgId, setFilterMsgId] = useState<number | null>(null); // templateId
   const [filterDueToday, setFilterDueToday] = useState(false);
+  const [search, setSearch] = useState("");
 
   const typedProspects = prospects as ProspectRow[];
 
-  // Apply filters
+  // Apply filters + search
   const filteredProspects = typedProspects.filter((p) => {
+    if (search.trim()) {
+      const q = search.trim().toLowerCase();
+      const match =
+        p.name.toLowerCase().includes(q) ||
+        (p.email ?? "").toLowerCase().includes(q) ||
+        (p.linkedin ?? "").toLowerCase().includes(q);
+      if (!match) return false;
+    }
     if (filterStatus && p.status !== filterStatus) return false;
     if (filterMsgId !== null) {
       const msgStatus = p.messageStatuses.find((s) => s.messageTemplateId === filterMsgId);
@@ -724,6 +733,26 @@ export default function ProspectTable() {
           </div>
           <h1 className="text-sm font-black text-gradient truncate max-w-[200px]">{card?.name ?? "Loading..."}</h1>
           <div className="flex items-center gap-1">
+            {/* Search input */}
+            <div className="relative">
+              <Search className="absolute left-2.5 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-gray-400 pointer-events-none" />
+              <input
+                type="text"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                placeholder="Search..."
+                className="pl-8 pr-6 py-1.5 rounded-full text-xs font-semibold bg-gray-50 border border-gray-200 focus:outline-none focus:ring-2 focus:ring-blue-200 focus:border-blue-300 text-gray-700 placeholder-gray-300 w-32 focus:w-44 transition-all duration-200"
+              />
+              {search && (
+                <button
+                  onClick={() => setSearch("")}
+                  className="absolute right-2 top-1/2 -translate-y-1/2 text-gray-400 hover:text-gray-600"
+                >
+                  <X className="w-3 h-3" />
+                </button>
+              )}
+            </div>
+
             {/* Filter button */}
             <div className="relative">
               <button
