@@ -1,0 +1,779 @@
+openapi: 3.1.0
+info:
+  # Do not change the title, if the title changes, the import paths will be broken
+  title: Api
+  version: 0.1.0
+  description: Aintution Prospects API
+servers:
+  - url: /api
+    description: Base API path
+tags:
+  - name: health
+    description: Health operations
+  - name: cards
+    description: Prospect card management
+  - name: prospects
+    description: Prospect management within cards
+  - name: messages
+    description: Message template management
+  - name: analytics
+    description: Analytics and reporting
+
+paths:
+  /healthz:
+    get:
+      operationId: healthCheck
+      tags: [health]
+      summary: Health check
+      responses:
+        "200":
+          description: Healthy
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/HealthStatus"
+
+  # ── Cards ────────────────────────────────────────────────────────────────────
+  /cards:
+    get:
+      operationId: listCards
+      tags: [cards]
+      summary: List all cards for current user
+      responses:
+        "200":
+          description: List of cards
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/Card"
+    post:
+      operationId: createCard
+      tags: [cards]
+      summary: Create a new card
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+
+  /cards/{cardId}:
+    get:
+      operationId: getCard
+      tags: [cards]
+      summary: Get a single card
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: Card
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+        "404":
+          description: Not found
+    patch:
+      operationId: updateCard
+      tags: [cards]
+      summary: Update a card
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/CardUpdate"
+      responses:
+        "200":
+          description: Updated card
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/Card"
+    delete:
+      operationId: deleteCard
+      tags: [cards]
+      summary: Delete a card
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Message Templates ─────────────────────────────────────────────────────────
+  /cards/{cardId}/messages:
+    get:
+      operationId: listMessages
+      tags: [messages]
+      summary: List message templates for a card
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of message templates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/MessageTemplate"
+    post:
+      operationId: createMessage
+      tags: [messages]
+      summary: Create a message template
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageTemplateInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageTemplate"
+
+  /cards/{cardId}/messages/{messageId}:
+    patch:
+      operationId: updateMessage
+      tags: [messages]
+      summary: Update a message template
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: messageId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageTemplateUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageTemplate"
+    delete:
+      operationId: deleteMessage
+      tags: [messages]
+      summary: Delete a message template
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: messageId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Prospects ─────────────────────────────────────────────────────────────────
+  /cards/{cardId}/prospects:
+    get:
+      operationId: listProspects
+      tags: [prospects]
+      summary: List prospects for a card
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "200":
+          description: List of prospects with message statuses
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProspectWithStatuses"
+    post:
+      operationId: createProspect
+      tags: [prospects]
+      summary: Create a prospect
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProspectInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProspectWithStatuses"
+
+  /cards/{cardId}/prospects/bulk:
+    post:
+      operationId: bulkCreateProspects
+      tags: [prospects]
+      summary: Bulk create prospects (paste from spreadsheet)
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/BulkProspectInput"
+      responses:
+        "201":
+          description: Created prospects
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: "#/components/schemas/ProspectWithStatuses"
+
+  /cards/{cardId}/prospects/{prospectId}:
+    patch:
+      operationId: updateProspect
+      tags: [prospects]
+      summary: Update a prospect
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: prospectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/ProspectUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ProspectWithStatuses"
+    delete:
+      operationId: deleteProspect
+      tags: [prospects]
+      summary: Delete a prospect
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: prospectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  /cards/{cardId}/prospects/{prospectId}/message-status:
+    patch:
+      operationId: updateMessageStatus
+      tags: [prospects]
+      summary: Toggle done status for a message on a prospect
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: prospectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/MessageStatusUpdate"
+      responses:
+        "200":
+          description: Updated status
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/MessageStatus"
+
+  /cards/{cardId}/prospects/{prospectId}/email-steps:
+    post:
+      operationId: createEmailStep
+      tags: [prospects]
+      summary: Add an email step to a prospect
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: prospectId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailStepInput"
+      responses:
+        "201":
+          description: Created
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailStep"
+
+  /cards/{cardId}/prospects/{prospectId}/email-steps/{stepId}:
+    patch:
+      operationId: updateEmailStep
+      tags: [prospects]
+      summary: Update an email step (toggle done or rename)
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: prospectId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: stepId
+          in: path
+          required: true
+          schema:
+            type: integer
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/schemas/EmailStepUpdate"
+      responses:
+        "200":
+          description: Updated
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EmailStep"
+    delete:
+      operationId: deleteEmailStep
+      tags: [prospects]
+      summary: Delete an email step
+      parameters:
+        - name: cardId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: prospectId
+          in: path
+          required: true
+          schema:
+            type: integer
+        - name: stepId
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        "204":
+          description: Deleted
+
+  # ── Analytics ─────────────────────────────────────────────────────────────────
+  /analytics:
+    get:
+      operationId: getAnalytics
+      tags: [analytics]
+      summary: Get analytics overview for all cards
+      responses:
+        "200":
+          description: Analytics overview
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/AnalyticsOverview"
+
+  /analytics/export-csv:
+    get:
+      operationId: exportCsv
+      tags: [analytics]
+      summary: Export all prospects data as CSV
+      responses:
+        "200":
+          description: CSV file
+          content:
+            text/csv:
+              schema:
+                type: string
+
+components:
+  schemas:
+    HealthStatus:
+      type: object
+      properties:
+        status:
+          type: string
+      required:
+        - status
+
+    Card:
+      type: object
+      required: [id, name, imageUrl, userId, createdAt]
+      properties:
+        id:
+          type: integer
+        name:
+          type: string
+        imageUrl:
+          type: ["string", "null"]
+        userId:
+          type: string
+        createdAt:
+          type: string
+          format: date-time
+
+    CardInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+          minLength: 1
+        imageUrl:
+          type: ["string", "null"]
+
+    CardUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+          minLength: 1
+        imageUrl:
+          type: ["string", "null"]
+
+    MessageTemplate:
+      type: object
+      required: [id, cardId, label, content, order, daysFromPrev, isDefault]
+      properties:
+        id:
+          type: integer
+        cardId:
+          type: integer
+        label:
+          type: string
+        content:
+          type: string
+        order:
+          type: integer
+        daysFromPrev:
+          type: ["integer", "null"]
+        isDefault:
+          type: boolean
+
+    MessageTemplateInput:
+      type: object
+      required: [label, content]
+      properties:
+        label:
+          type: string
+        content:
+          type: string
+        daysFromPrev:
+          type: ["integer", "null"]
+
+    MessageTemplateUpdate:
+      type: object
+      properties:
+        label:
+          type: string
+        content:
+          type: string
+        daysFromPrev:
+          type: ["integer", "null"]
+
+    Prospect:
+      type: object
+      required: [id, cardId, rowNumber, name, email, linkedin, status, leadDone, createdAt]
+      properties:
+        id:
+          type: integer
+        cardId:
+          type: integer
+        rowNumber:
+          type: integer
+        name:
+          type: string
+        email:
+          type: ["string", "null"]
+        linkedin:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [not_send, send, accept, reject]
+        leadDone:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+
+    ProspectInput:
+      type: object
+      required: [name]
+      properties:
+        name:
+          type: string
+        email:
+          type: ["string", "null"]
+        linkedin:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [not_send, send, accept, reject]
+        leadDone:
+          type: boolean
+
+    ProspectUpdate:
+      type: object
+      properties:
+        name:
+          type: string
+        email:
+          type: ["string", "null"]
+        linkedin:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [not_send, send, accept, reject]
+        leadDone:
+          type: boolean
+
+    BulkProspectInput:
+      type: object
+      required: [rows]
+      properties:
+        rows:
+          type: array
+          items:
+            $ref: "#/components/schemas/ProspectInput"
+
+    MessageStatus:
+      type: object
+      required: [id, prospectId, messageTemplateId, done]
+      properties:
+        id:
+          type: integer
+        prospectId:
+          type: integer
+        messageTemplateId:
+          type: integer
+        done:
+          type: boolean
+        doneAt:
+          type: ["string", "null"]
+          format: date-time
+
+    MessageStatusUpdate:
+      type: object
+      required: [messageTemplateId, done]
+      properties:
+        messageTemplateId:
+          type: integer
+        done:
+          type: boolean
+
+    ProspectWithStatuses:
+      type: object
+      required: [id, cardId, rowNumber, name, email, linkedin, status, leadDone, createdAt, messageStatuses, emailSteps]
+      properties:
+        id:
+          type: integer
+        cardId:
+          type: integer
+        rowNumber:
+          type: integer
+        name:
+          type: string
+        email:
+          type: ["string", "null"]
+        linkedin:
+          type: ["string", "null"]
+        status:
+          type: string
+          enum: [not_send, send, accept, reject]
+        leadDone:
+          type: boolean
+        createdAt:
+          type: string
+          format: date-time
+        messageStatuses:
+          type: array
+          items:
+            $ref: "#/components/schemas/MessageStatus"
+        emailSteps:
+          type: array
+          items:
+            $ref: "#/components/schemas/EmailStep"
+
+    EmailStep:
+      type: object
+      required: [id, prospectId, label, done, order, createdAt]
+      properties:
+        id:
+          type: integer
+        prospectId:
+          type: integer
+        label:
+          type: string
+        done:
+          type: boolean
+        order:
+          type: integer
+        createdAt:
+          type: string
+          format: date-time
+
+    EmailStepInput:
+      type: object
+      required: [label]
+      properties:
+        label:
+          type: string
+
+    EmailStepUpdate:
+      type: object
+      properties:
+        label:
+          type: string
+        done:
+          type: boolean
+
+    CardAnalytics:
+      type: object
+      required: [cardId, cardName, totalProspects, statusCounts, messageCounts, overdueCount, dueTodayCount]
+      properties:
+        cardId:
+          type: integer
+        cardName:
+          type: string
+        totalProspects:
+          type: integer
+        statusCounts:
+          type: object
+          properties:
+            not_send:
+              type: integer
+            send:
+              type: integer
+            accept:
+              type: integer
+            reject:
+              type: integer
+          required: [not_send, send, accept, reject]
+        messageCounts:
+          type: array
+          items:
+            type: object
+            required: [messageId, label, doneCount]
+            properties:
+              messageId:
+                type: integer
+              label:
+                type: string
+              doneCount:
+                type: integer
+        overdueCount:
+          type: integer
+        dueTodayCount:
+          type: integer
+        leadDoneCount:
+          type: integer
+
+    AnalyticsOverview:
+      type: object
+      required: [cards, totalProspects, totalAccepted, totalRejected]
+      properties:
+        cards:
+          type: array
+          items:
+            $ref: "#/components/schemas/CardAnalytics"
+        totalProspects:
+          type: integer
+        totalAccepted:
+          type: integer
+        totalRejected:
+          type: integer

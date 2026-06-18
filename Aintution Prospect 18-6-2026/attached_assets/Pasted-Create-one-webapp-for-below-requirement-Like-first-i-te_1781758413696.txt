@@ -1,0 +1,54 @@
+Create one webapp for below requirement. 
+
+Like first i tell theme is like Create a bright, joyful, lightweight, and magical illustration soft 3D illustration style Pastel color palette (soft blues, pinks, greens, yellows, lavenders, red)
+Soft 3D cartoon / Pixar-like illustration
+Like make it full soft colorfull and premium 
+Also make hole webapp in Glass effects with full premium feel.
+And make surethis webapp is fully support in mobile interface also.
+
+Now first main screen is like on top middle we have logo (logo i attehced (1st image is logo)) and name is Aintution Prospects 
+
+And then below we have one image container (i attached 2nd image that 2nd image use here like in proper container formate like wih glass effects, colorfull borders)
+(i attached 3rd image and that image is use here when it is in mobile view (width is low), like same image but like ratio is different)
+
+Now when we click on this image so one beautiful popup is open where we can do signup and signin (normal signin and signup, we can do signup using mobile phone also) 
+
+Now after signin/signup we go to main screen where like on top left side we have logo and name Aintution Prospects and on top right side we have one setting option.
+
+Now in first row we have one image container like same we have in home screen(this image i add at (4th image is this one)) 
+
+now on top right side we have setting so when we click so one screen is open where option to add new so there like first add name, then upload image (images store in database).
+Now this image and name is appear in main screen like from 2nd row like in one row we set 2 cards (which we create from settings) (if we have only one so that come i hole row when 2 so like in 2nd row we have in container primum glass with colorfull border container where like image and below name in text colorfull animated).
+
+Now when we click on thes cards so one new screen is open where on top left we have logo middal we have name and then on right we have one setting option when we click on this so one enw screen is open now there have one default writing space is like name is a default message 
+Then like we have option to create 1st message, 2nd message, 3rd message this name formate is same like just change 1,2,3 … 
+
+Now we come to main screen of this card like we have one premium table view like google sheet table vide (or airtable tables view) but with fully premium colorfull borders and full premium UI.
+Now here default colum is No, Name, Email, LinkedIn, Status(we can select like dropdown come Default is Not Send, then Send, Accept, Reject all have different colors), Lead (this is like mark right like option to mark Done like this field) (then now like columns come dynamically what we creates in setting like default message, 1st message, 2nd message,,,,)
+
+Now like if i copy one colum from google sheet like 10 row on column and i can pest here so like all proper copy pest in new rows. Or i add/update one one singe single also. 
+Now like what we want in setting for example in default message i write some line for example like ‘Good Morning #name’ so like in tabe like in default message column we need to come like Good Morning with name of that row’s Name field like we need to take first name only. Like if name is Neel Vadariya so like this field main value is become a ‘Good Morning Neel’
+
+Like this is happes in all messages. 
+
+Now like in this field like default message, first message,.... Fieldbox at right side bottom of this field box we have one tick mark option like when we click on that so like right sign is come. And when we click to that field so that text is copied and also we see message in beautiful way like message is copied.  (here i am tak about box box means one row and that rows one column value means field that boxes you understand right?)
+This table is proper up-down and left-right smooth scrollable. We aso adjust width of each columns also. 
+
+And like when we add texts in settings so like if we make space, or enter (empty line so that proper come)
+
+Now like add one more feature like in setting when we add texts like 1st message, 2nd message… (not in default message) like so here we add time like if like in first message i add 30 means 30 days so like when i mark done of default message so like from that date 30 days is count and this number is visible in that first message column boxes for that brown where like first message is send like inside box we below border we see like 30 then like 29, … when it count is 30 to 1 color is Green when like it 0 so color is yellow and then after -1, -2 so this number color is red and like blinking this number at time of Yellow and red color. 
+
+And like in 2nd message if i add 45 days means like when first message field we make done (tick) from that day is start for 2nd message box value.
+
+You understand?
+So like you make that table very beautiful, proper colorfull and proper UI.
+
+
+Like you understand?
+
+Make like proper colorfuul and premium design. 
+
+And like now we come to main home screen where we have one image section in first row when we click on that so we have full analytics like of each card like total row (value), Status How many Accepts, reject, send all vlause and like how many done 1st, 2nd… based on cards, also like how many overdue, or howmany is today last date….
+Liek this all the analytics of each card.
+
+We also export in CSV for all cards in one csv. 

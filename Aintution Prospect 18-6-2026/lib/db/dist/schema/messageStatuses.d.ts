@@ -1,0 +1,122 @@
+import { z } from "zod/v4";
+export declare const messageStatusesTable: import("drizzle-orm/pg-core").PgTableWithColumns<{
+    name: "message_statuses";
+    schema: undefined;
+    columns: {
+        id: import("drizzle-orm/pg-core").PgColumn<{
+            name: "id";
+            tableName: "message_statuses";
+            dataType: "number";
+            columnType: "PgSerial";
+            data: number;
+            driverParam: number;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: true;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        prospectId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "prospect_id";
+            tableName: "message_statuses";
+            dataType: "number";
+            columnType: "PgInteger";
+            data: number;
+            driverParam: string | number;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        messageTemplateId: import("drizzle-orm/pg-core").PgColumn<{
+            name: "message_template_id";
+            tableName: "message_statuses";
+            dataType: "number";
+            columnType: "PgInteger";
+            data: number;
+            driverParam: string | number;
+            notNull: true;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        done: import("drizzle-orm/pg-core").PgColumn<{
+            name: "done";
+            tableName: "message_statuses";
+            dataType: "boolean";
+            columnType: "PgBoolean";
+            data: boolean;
+            driverParam: boolean;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        doneAt: import("drizzle-orm/pg-core").PgColumn<{
+            name: "done_at";
+            tableName: "message_statuses";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: false;
+            hasDefault: false;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+        createdAt: import("drizzle-orm/pg-core").PgColumn<{
+            name: "created_at";
+            tableName: "message_statuses";
+            dataType: "date";
+            columnType: "PgTimestamp";
+            data: Date;
+            driverParam: string;
+            notNull: true;
+            hasDefault: true;
+            isPrimaryKey: false;
+            isAutoincrement: false;
+            hasRuntimeDefault: false;
+            enumValues: undefined;
+            baseColumn: never;
+            identity: undefined;
+            generated: undefined;
+        }, {}, {}>;
+    };
+    dialect: "pg";
+}>;
+export declare const insertMessageStatusSchema: z.ZodObject<{
+    prospectId: z.ZodInt;
+    messageTemplateId: z.ZodInt;
+    done: z.ZodOptional<z.ZodBoolean>;
+    doneAt: z.ZodOptional<z.ZodNullable<z.ZodDate>>;
+}, {
+    out: {};
+    in: {};
+}>;
+export type InsertMessageStatus = z.infer<typeof insertMessageStatusSchema>;
+export type MessageStatus = typeof messageStatusesTable.$inferSelect;
+//# sourceMappingURL=messageStatuses.d.ts.map
