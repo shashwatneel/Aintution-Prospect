@@ -52,6 +52,35 @@ function renderMessage(content: string, name: string) {
   return content.replace(/#name/gi, getFirstName(name));
 }
 
+function truncateWords(text: string, wordCount = 3): string {
+  const words = text.trim().split(/\s+/);
+  if (words.length <= wordCount) return text;
+  return words.slice(0, wordCount).join(" ") + "…";
+}
+
+function copyToClipboard(text: string): Promise<void> {
+  if (navigator.clipboard && window.isSecureContext) {
+    return navigator.clipboard.writeText(text);
+  }
+  const textarea = document.createElement("textarea");
+  textarea.value = text;
+  textarea.style.position = "fixed";
+  textarea.style.top = "-9999px";
+  textarea.style.left = "-9999px";
+  textarea.style.opacity = "0";
+  document.body.appendChild(textarea);
+  textarea.focus();
+  textarea.select();
+  try {
+    document.execCommand("copy");
+    document.body.removeChild(textarea);
+    return Promise.resolve();
+  } catch (err) {
+    document.body.removeChild(textarea);
+    return Promise.reject(err);
+  }
+}
+
 function computeCountdown(
   messages: { id: number; isDefault: boolean; daysFromPrev: number | null; order: number }[],
   statuses: { messageTemplateId: number; done: boolean; doneAt: string | null }[],
@@ -208,7 +237,7 @@ function LinkedInCell({
   function handleCopy(e: React.MouseEvent) {
     e.stopPropagation();
     if (!value) return;
-    navigator.clipboard.writeText(value).then(() => {
+    copyToClipboard(value).then(() => {
       setCopied(true);
       toast.success("LinkedIn URL copied!");
       setTimeout(() => setCopied(false), 2000);
@@ -335,17 +364,22 @@ function MessageCell({
   const rendered = renderMessage(content, name);
 
   function handleCopy() {
-    navigator.clipboard.writeText(rendered).then(() => {
+    copyToClipboard(rendered).then(() => {
       setCopied(true);
       toast.success("Message copied!");
       setTimeout(() => setCopied(false), 2000);
     });
   }
 
+  const preview = truncateWords(rendered, 3);
+
   return (
-    <div className={`relative min-w-[180px] max-w-[220px] px-3 py-2 rounded-2xl text-sm font-medium transition-all ${done ? "bg-green-50 border border-green-100" : "bg-blue-50/60 border border-blue-100/80"}`}>
-      <p className={`text-gray-700 text-xs leading-relaxed whitespace-pre-wrap break-words pr-6 ${done ? "line-through text-gray-400" : ""}`}>
-        {rendered || <span className="text-gray-300 italic">No content</span>}
+    <div
+      className={`relative min-w-[140px] max-w-[200px] px-3 py-2 rounded-2xl text-sm font-medium transition-all ${done ? "bg-green-50 border border-green-100" : "bg-blue-50/60 border border-blue-100/80"}`}
+      title={rendered}
+    >
+      <p className={`text-gray-700 text-xs leading-relaxed truncate pr-6 ${done ? "line-through text-gray-400" : ""}`}>
+        {preview || <span className="text-gray-300 italic">No content</span>}
       </p>
       {countdown !== null && !done && <CountdownBadge days={countdown} />}
       <button
