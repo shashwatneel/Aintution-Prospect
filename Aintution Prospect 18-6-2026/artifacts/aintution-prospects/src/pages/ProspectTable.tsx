@@ -953,12 +953,12 @@ export default function ProspectTable() {
                       data-testid={`row-prospect-${p.id}`}
                     >
                       {/* No */}
-                      <td className="px-3 py-1 border-r border-gray-100 text-xs font-bold text-gray-400 text-center" style={{ width: getColWidth("no", 48) }}>
+                      <td className="px-3 py-1 border-r border-gray-100 text-xs font-bold text-gray-400 text-center overflow-hidden" style={{ width: getColWidth("no", 48), maxWidth: getColWidth("no", 48) }}>
                         {rowIdx + 1}
                       </td>
 
                       {/* Name */}
-                      <td className="px-2 py-1 border-r border-gray-100" style={{ width: getColWidth("name", 170) }}>
+                      <td className="px-2 py-1 border-r border-gray-100 overflow-hidden" style={{ width: getColWidth("name", 170), maxWidth: getColWidth("name", 170) }}>
                         <EditableCell
                           value={p.name}
                           onSave={(v) => handleUpdateProspect(p.id, "name", v)}
@@ -970,7 +970,7 @@ export default function ProspectTable() {
                       </td>
 
                       {/* Email */}
-                      <td className="px-2 py-1 border-r border-gray-100" style={{ width: getColWidth("email", 190) }}>
+                      <td className="px-2 py-1 border-r border-gray-100 overflow-hidden" style={{ width: getColWidth("email", 190), maxWidth: getColWidth("email", 190) }}>
                         <EditableCell
                           value={p.email ?? ""}
                           onSave={(v) => handleUpdateProspect(p.id, "email", v || null)}
@@ -982,7 +982,7 @@ export default function ProspectTable() {
                       </td>
 
                       {/* LinkedIn */}
-                      <td className="px-2 py-1 border-r border-gray-100" style={{ width: getColWidth("linkedin", 200) }}>
+                      <td className="px-2 py-1 border-r border-gray-100 overflow-hidden" style={{ width: getColWidth("linkedin", 200), maxWidth: getColWidth("linkedin", 200) }}>
                         <LinkedInCell
                           value={p.linkedin ?? ""}
                           onSave={(v) => handleUpdateProspect(p.id, "linkedin", v || null)}
@@ -993,7 +993,7 @@ export default function ProspectTable() {
                       </td>
 
                       {/* Status */}
-                      <td className="px-2 py-1 border-r border-gray-100" style={{ width: getColWidth("status", 120) }}>
+                      <td className="px-2 py-1 border-r border-gray-100 overflow-hidden" style={{ width: getColWidth("status", 120), maxWidth: getColWidth("status", 120) }}>
                         <StatusCell
                           value={p.status}
                           onChange={(v) => handleUpdateProspect(p.id, "status", v)}
@@ -1001,7 +1001,7 @@ export default function ProspectTable() {
                       </td>
 
                       {/* Lead */}
-                      <td className="px-2 py-1 border-r border-gray-100 text-center" style={{ width: getColWidth("lead", 60) }}>
+                      <td className="px-2 py-1 border-r border-gray-100 text-center overflow-hidden" style={{ width: getColWidth("lead", 60), maxWidth: getColWidth("lead", 60) }}>
                         <button
                           onClick={() => handleUpdateProspect(p.id, "leadDone", !p.leadDone)}
                           className={`p-1.5 rounded-xl transition-all ${p.leadDone ? "bg-green-100 text-green-600 shadow-sm" : "text-gray-300 hover:text-gray-500"}`}
@@ -1012,7 +1012,7 @@ export default function ProspectTable() {
                       </td>
 
                       {/* EM */}
-                      <td className="px-2 py-1 border-r border-gray-100 text-center" style={{ width: getColWidth("em", 60) }}>
+                      <td className="px-2 py-1 border-r border-gray-100 text-center overflow-hidden" style={{ width: getColWidth("em", 60), maxWidth: getColWidth("em", 60) }}>
                         <EMCell
                           steps={p.emailSteps}
                           prospectId={p.id}
@@ -1027,7 +1027,7 @@ export default function ProspectTable() {
                         const done = msgStatus?.done ?? false;
                         const countdown = computeCountdown(sortedMessages as any, p.messageStatuses as any, m.id);
                         return (
-                          <td key={m.id} className="px-2 py-1.5 border-r border-gray-100" style={{ width: getColWidth(`msg_${m.id}`, 210) }}>
+                          <td key={m.id} className="px-2 py-1.5 border-r border-gray-100 overflow-hidden" style={{ width: getColWidth(`msg_${m.id}`, 210), maxWidth: getColWidth(`msg_${m.id}`, 210) }}>
                             <MessageCell
                               content={m.content}
                               name={p.name}
@@ -1040,7 +1040,7 @@ export default function ProspectTable() {
                       })}
 
                       {/* Delete */}
-                      <td className="px-2 py-1 text-center" style={{ width: getColWidth("del", 48) }}>
+                      <td className="px-2 py-1 text-center overflow-hidden" style={{ width: getColWidth("del", 48), maxWidth: getColWidth("del", 48) }}>
                         <button
                           onClick={() => handleDeleteRow(p.id)}
                           className="p-1.5 rounded-xl text-gray-300 hover:text-red-500 hover:bg-red-50 transition-all opacity-0 group-hover:opacity-100"

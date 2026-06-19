@@ -2,9 +2,9 @@ import { useState } from "react";
 import { useLocation } from "wouter";
 import AI_LOGO from "@assets/AI_LOGO_1781758197757.png";
 import INSIGHTS_IMG from "@assets/Client_Find_insitfulls_1781758262455.png";
-import { LogOut, Plus, X, Image } from "lucide-react";
+import { LogOut, Plus, X, Image, Trash2 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useListCards, useCreateCard, getListCardsQueryKey } from "@workspace/api-client-react";
+import { useListCards, useCreateCard, useDeleteCard, getListCardsQueryKey } from "@workspace/api-client-react";
 import { useQueryClient } from "@tanstack/react-query";
 import { useAuth } from "@/lib/auth";
 import { toast } from "sonner";
@@ -16,10 +16,30 @@ export default function Dashboard() {
   const { data: cards = [], isLoading } = useListCards();
   const createCard = useCreateCard();
 
+  const deleteCard = useDeleteCard();
+  const [confirmDeleteId, setConfirmDeleteId] = useState<number | null>(null);
+
   const [showNewCard, setShowNewCard] = useState(false);
   const [newName, setNewName] = useState("");
   const [newImageUrl, setNewImageUrl] = useState("");
   const [creating, setCreating] = useState(false);
+
+  async function handleDeleteCard(cardId: number, e: React.MouseEvent) {
+    e.stopPropagation();
+    if (confirmDeleteId !== cardId) {
+      setConfirmDeleteId(cardId);
+      return;
+    }
+    try {
+      await deleteCard.mutateAsync({ cardId });
+      queryClient.invalidateQueries({ queryKey: getListCardsQueryKey() });
+      toast.success("Card deleted");
+    } catch {
+      toast.error("Failed to delete card");
+    } finally {
+      setConfirmDeleteId(null);
+    }
+  }
 
   async function handleCreateCard(e: React.FormEvent) {
     e.preventDefault();
@@ -109,9 +129,9 @@ export default function Dashboard() {
               ))
             ) : (
               cards.map((card) => (
-                <motion.div key={card.id} variants={item} className="group cursor-pointer" onClick={() => setLocation(`/cards/${card.id}`)}>
+                <motion.div key={card.id} variants={item} className="group cursor-pointer relative" onClick={() => setLocation(`/cards/${card.id}`)}>
                   <div className="gradient-border p-[2px] rounded-3xl md:h-full shadow-lg group-hover:shadow-xl transition-all duration-300 group-hover:-translate-y-1">
-                    <div className="glass-panel rounded-[1.4rem] overflow-hidden md:h-full">
+                    <div className="glass-panel rounded-[1.4rem] overflow-hidden md:h-full relative">
                       {card.imageUrl ? (
                         <img
                           src={card.imageUrl}
@@ -125,6 +145,22 @@ export default function Dashboard() {
                           <span className="text-sm font-bold text-blue-400">{card.name}</span>
                         </div>
                       )}
+
+                      {/* Delete button */}
+                      <button
+                        onClick={(e) => handleDeleteCard(card.id, e)}
+                        onBlur={() => setConfirmDeleteId(null)}
+                        className={`absolute top-3 right-3 flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold shadow-md transition-all duration-200
+                          opacity-0 group-hover:opacity-100
+                          ${confirmDeleteId === card.id
+                            ? "bg-red-500 text-white scale-105"
+                            : "bg-white/80 text-gray-500 hover:bg-red-50 hover:text-red-500"
+                          }`}
+                        title="Delete card"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                        {confirmDeleteId === card.id ? "Confirm?" : "Delete"}
+                      </button>
                     </div>
                   </div>
                 </motion.div>

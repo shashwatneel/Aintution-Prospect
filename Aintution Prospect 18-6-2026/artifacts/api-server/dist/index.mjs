@@ -60290,9 +60290,9 @@ app.use(
     saveUninitialized: false,
     cookie: {
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.COOKIE_SECURE === "true",
       maxAge: 30 * 24 * 60 * 60 * 1e3,
-      sameSite: process.env.NODE_ENV === "production" ? "none" : "lax"
+      sameSite: process.env.COOKIE_SECURE === "true" ? "none" : "lax"
     },
     store: new PgStore({
       pool,
