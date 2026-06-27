@@ -1,5 +1,4 @@
 import { useLocation, useRoute } from "wouter";
-import { motion, AnimatePresence } from "framer-motion";
 import { ArrowLeft, Settings, Plus, Check, Copy, Clipboard, CheckSquare, Square, Trash2, Link, SlidersHorizontal, X, Mail, Search } from "lucide-react";
 import AI_LOGO from "@assets/AI_LOGO_1781758197757.png";
 import {
@@ -313,36 +312,30 @@ function StatusCell({ value, onChange }: { value: string; onChange: (v: string) 
 
   return (
     <div className="relative">
+      {open && <div className="fixed inset-0 z-40" onClick={() => setOpen(false)} />}
       <button
         onClick={() => setOpen((o) => !o)}
-        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-bold ${opt.bg} ${opt.text} hover:opacity-80 transition-all whitespace-nowrap`}
+        className={`flex items-center gap-1.5 px-2.5 py-1 rounded-xl text-xs font-bold ${opt.bg} ${opt.text} hover:opacity-80 whitespace-nowrap`}
         data-testid={`status-badge-${value}`}
       >
         <span className={`w-1.5 h-1.5 rounded-full ${opt.dot}`} />
         {opt.label}
       </button>
-      <AnimatePresence>
-        {open && (
-          <motion.div
-            initial={{ opacity: 0, y: 4, scale: 0.95 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            exit={{ opacity: 0, y: 4, scale: 0.95 }}
-            className="absolute z-50 top-full mt-1 left-0 bg-white rounded-2xl p-1.5 shadow-xl border border-gray-100 min-w-[120px]"
-          >
-            {STATUS_OPTIONS.map((s) => (
-              <button
-                key={s.value}
-                onClick={() => { onChange(s.value); setOpen(false); }}
-                className={`flex items-center gap-2 w-full px-3 py-1.5 rounded-xl text-xs font-bold ${s.text} hover:${s.bg} hover:opacity-80 transition-colors`}
-                data-testid={`status-option-${s.value}`}
-              >
-                <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
-                {s.label}
-              </button>
-            ))}
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {open && (
+        <div className="absolute z-50 top-full mt-1 left-0 bg-white rounded-2xl p-1.5 shadow-xl border border-gray-100 min-w-[120px]">
+          {STATUS_OPTIONS.map((s) => (
+            <button
+              key={s.value}
+              onClick={() => { onChange(s.value); setOpen(false); }}
+              className={`flex items-center gap-2 w-full px-3 py-1.5 rounded-xl text-xs font-bold ${s.text} hover:bg-gray-50`}
+              data-testid={`status-option-${s.value}`}
+            >
+              <span className={`w-1.5 h-1.5 rounded-full ${s.dot}`} />
+              {s.label}
+            </button>
+          ))}
+        </div>
+      )}
     </div>
   );
 }
@@ -462,7 +455,7 @@ function EMCell({
     <div className="relative flex items-center justify-center">
       <button
         onClick={() => setOpen((v) => !v)}
-        className={`flex items-center justify-center gap-0.5 px-1 py-0.5 rounded-lg min-w-[24px] min-h-[20px] transition-colors ${open ? "bg-purple-100" : "hover:bg-purple-50"}`}
+        className={`flex items-center justify-center gap-0.5 px-1 py-0.5 rounded-lg min-w-[24px] min-h-[20px] ${open ? "bg-purple-100" : "hover:bg-purple-50"}`}
         title="Email steps"
       >
         {sorted.length === 0 ? (
@@ -474,17 +467,12 @@ function EMCell({
         )}
       </button>
 
-      <AnimatePresence>
-        {open && (
-          <>
-            <div className="fixed inset-0 z-[150]" onClick={() => setOpen(false)} />
-            <motion.div
-              initial={{ opacity: 0, scale: 0.95, y: -4 }}
-              animate={{ opacity: 1, scale: 1, y: 0 }}
-              exit={{ opacity: 0, scale: 0.95, y: -4 }}
-              transition={{ duration: 0.12 }}
-              className="absolute left-0 top-full mt-1 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 z-[200] p-3 space-y-2"
-            >
+      {open && (
+        <>
+          <div className="fixed inset-0 z-[150]" onClick={() => setOpen(false)} />
+          <div
+            className="absolute left-0 top-full mt-1 w-64 bg-white rounded-2xl shadow-2xl border border-gray-100 z-[200] p-3 space-y-2"
+          >
               <div className="flex items-center justify-between px-1">
                 <span className="text-xs font-black text-gray-500 uppercase tracking-wider">Email Steps</span>
                 {sorted.length > 0 && (
@@ -532,10 +520,9 @@ function EMCell({
                   <Plus className="w-3.5 h-3.5" />
                 </button>
               </div>
-            </motion.div>
-          </>
-        )}
-      </AnimatePresence>
+          </div>
+        </>
+      )}
     </div>
   );
 }
@@ -801,15 +788,9 @@ export default function ProspectTable() {
               </button>
 
               {/* Filter panel */}
-              <AnimatePresence>
                 {showFilter && (
-                  <motion.div
-                    initial={{ opacity: 0, y: -8, scale: 0.96 }}
-                    animate={{ opacity: 1, y: 0, scale: 1 }}
-                    exit={{ opacity: 0, y: -8, scale: 0.96 }}
-                    transition={{ duration: 0.15 }}
-                    className="absolute right-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 z-[200] p-4 space-y-4"
-                  >
+                  <div className="absolute right-0 top-full mt-2 w-72 bg-white rounded-2xl shadow-2xl border border-gray-100 z-[200] p-4 space-y-4">
+                  
                     {/* Header */}
                     <div className="flex items-center justify-between">
                       <span className="text-sm font-black text-gray-700">Filters</span>
@@ -895,9 +876,8 @@ export default function ProspectTable() {
                         <span className="font-black text-gray-700">{typedProspects.length}</span> prospects
                       </p>
                     )}
-                  </motion.div>
+                  </div>
                 )}
-              </AnimatePresence>
             </div>
 
             {/* Settings button */}
@@ -944,12 +924,9 @@ export default function ProspectTable() {
                 {filteredProspects.map((p, rowIdx) => {
                   const rc = rowColor(rowIdx);
                   return (
-                    <motion.tr
+                    <tr
                       key={p.id}
-                      initial={{ opacity: 0, x: -10 }}
-                      animate={{ opacity: 1, x: 0 }}
-                      transition={{ delay: rowIdx * 0.03 }}
-                      className="group hover:bg-blue-50/40 transition-colors border-b border-gray-200"
+                      className="group hover:bg-blue-50/40 border-b border-gray-200"
                       data-testid={`row-prospect-${p.id}`}
                     >
                       {/* No */}
@@ -993,7 +970,7 @@ export default function ProspectTable() {
                       </td>
 
                       {/* Status */}
-                      <td className="px-2 py-1 border-r border-gray-100 overflow-hidden" style={{ width: getColWidth("status", 120), maxWidth: getColWidth("status", 120) }}>
+                      <td className="px-2 py-1 border-r border-gray-100" style={{ width: getColWidth("status", 120), maxWidth: getColWidth("status", 120) }}>
                         <StatusCell
                           value={p.status}
                           onChange={(v) => handleUpdateProspect(p.id, "status", v)}
@@ -1050,24 +1027,22 @@ export default function ProspectTable() {
                           <Trash2 className="w-4 h-4" />
                         </button>
                       </td>
-                    </motion.tr>
+                    </tr>
                   );
                 })}
               </tbody>
             </table>
 
             {/* Add row */}
-            <motion.button
-              whileHover={{ scale: 1.02 }}
-              whileTap={{ scale: 0.98 }}
+            <button
               onClick={handleAddRow}
               disabled={createProspect.isPending}
-              className="mt-4 flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-200/80 to-purple-200/80 hover:from-blue-300/80 hover:to-purple-300/80 text-blue-700 font-bold text-sm shadow-md transition-all disabled:opacity-60"
+              className="mt-4 flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-blue-200/80 to-purple-200/80 hover:from-blue-300/80 hover:to-purple-300/80 text-blue-700 font-bold text-sm shadow-md disabled:opacity-60"
               data-testid="button-add-row"
             >
               <Plus className="w-4 h-4" />
               Add Row
-            </motion.button>
+            </button>
 
             {typedProspects.length === 0 && !isLoading && (
               <div className="text-center py-16 text-gray-400">
